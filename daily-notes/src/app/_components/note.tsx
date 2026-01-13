@@ -2,22 +2,18 @@
 
 import { useState } from "react";
 
-import { api } from "~/trpc/react"; 
+import { api } from "~/trpc/react";
 
-export default function NotePage() {
-    const utils = api.useUtils();
-    const [noteContent, setNoteContent] = useState("");
+export function Note() {
+  const [noteContent, setNoteContent] = useState("");
   const createNote = api.note.create.useMutation({
-    onSuccess: async() => {
-        await utils.note.invalidate();
-        setNoteContent("");
+    onSuccess: async () => {
+      setNoteContent("");
     },
   });
 
-
   return (
-    <div>
-      <h1>Create a Note</h1>
+    <div className="w-full max-w-md">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -25,19 +21,19 @@ export default function NotePage() {
         }}
         className="flex flex-col gap-2"
       >
-        <input
-          type="text"
-          placeholder="Title"
+        <textarea
+          placeholder="Write your note here..."
           value={noteContent}
           onChange={(e) => setNoteContent(e.target.value)}
-          className="w-full rounded-full bg-white/10 px-4 py-2 text-black"
+          className="w-full rounded-lg bg-white/10 px-4 py-2 text-white"
+          rows={5}
         />
         <button
           type="submit"
           className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
           disabled={createNote.isPending}
         >
-          {createNote.isPending ? "Submitting..." : "Submit"}
+          {createNote.isPending ? "Saving..." : "Save Note"}
         </button>
       </form>
     </div>

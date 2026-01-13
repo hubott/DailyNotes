@@ -21,5 +21,12 @@ export const NoteRouter = createTRPCRouter({
       });
     }),
 
+    getUser: protectedProcedure.query(async ({ ctx }) => {
+      const userId = ctx.session.user.id;
+      return ctx.db.user.findUnique({
+        where: { id: userId },
+      });
+    }),
+
 
 });
