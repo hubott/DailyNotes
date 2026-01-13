@@ -27,5 +27,30 @@ export const NoteRouter = createTRPCRouter({
       });
     }),
 
+    getNotes: protectedProcedure.query(async ({ ctx }) => {
+      const userId = ctx.session.user.id;
+      return ctx.db.note.findMany({
+        where: { userId },
+        orderBy: { date: "desc" },
+      });
+    }),
+
+    editNote: protectedProcedure
+    .input(z.object({ id: z.string(), contents: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.note.update({
+        where: { id: input.id },
+        data: { contents: input.contents },
+      });
+    }),
+
+    deleteNote: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.note.delete({
+        where: { id: input.id },
+      });
+    }),
+
 
 });
