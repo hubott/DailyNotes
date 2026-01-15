@@ -5,6 +5,8 @@ import { auth } from "~/server/auth";
 import { HydrateClient } from "~/trpc/server";
 import { redirect } from "next/navigation";
 
+import StarField from "./_components/starbackground";
+
 export default async function Home() {
   const session = await auth();
 
@@ -14,8 +16,10 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-linear-to-b from-[#2e026d] to-[#15162c] text-white">
+      <main className="relative flex min-h-screen flex-col items-center justify-center bg-linear-to-b from-[#2e026d] to-[#15162c] text-white">
+        <StarField />
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+          
           <h1>Welcome to DailyNotes</h1>
           <div className="flex flex-col items-center gap-2">
 

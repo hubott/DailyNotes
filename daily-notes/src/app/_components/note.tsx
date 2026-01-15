@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import { api } from "~/trpc/react";
 
+const MAX_NOTE_LENGTH = 500;
+
 export function Note() {
   const [noteContent, setNoteContent] = useState("");
   const createNote = api.note.create.useMutation({
@@ -11,6 +13,14 @@ export function Note() {
       setNoteContent("");
     },
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    if (value.length <= MAX_NOTE_LENGTH) {
+        setNoteContent(value);
+    }
+  };
 
   return (
     <div className="w-full max-w-md">
@@ -22,12 +32,16 @@ export function Note() {
         className="flex flex-col gap-2"
       >
         <textarea
-          placeholder="Write your note here..."
+          placeholder="Today I did..."
           value={noteContent}
-          onChange={(e) => setNoteContent(e.target.value)}
+
+          onChange={(e) => { handleChange(e); }}
           className="w-full rounded-lg bg-white/10 px-4 py-2 text-white"
           rows={5}
         />
+        <div className="pointer-events-none text-sm text-gray-400 text-right">
+            {noteContent.length}/{MAX_NOTE_LENGTH}
+            </div>
         <button
           type="submit"
           className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
@@ -104,7 +118,7 @@ function ConfirmDeleteButton({ onDelete, isDeleting }: { onDelete: () => void; i
     return (
       <div className="flex gap-2">
         <button
-          className="rounded-full bg-white/10 text-red-700 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2"
+          className="rounded-full bg-white/10 text-red-700 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2 cursor-pointer"
           onClick={() => {
             onDelete();
             setConfirming(false);
@@ -113,7 +127,7 @@ function ConfirmDeleteButton({ onDelete, isDeleting }: { onDelete: () => void; i
         >
           {isDeleting ? "Deleting..." : "Confirm"}
         </button>
-        <button className="text-gray-400 hover:text-white" onClick={() => setConfirming(false)}>
+        <button className="text-gray-400 hover:text-white cursor-pointer" onClick={() => setConfirming(false)}>
           Cancel
         </button>
       </div>
@@ -121,7 +135,7 @@ function ConfirmDeleteButton({ onDelete, isDeleting }: { onDelete: () => void; i
   }
 
   return (
-    <button className="rounded-full bg-white/10 text-red-700 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2" onClick={() => setConfirming(true)}>
+    <button className="rounded-full bg-white/10 text-red-700 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2 cursor-pointer" onClick={() => setConfirming(true)}>
       Delete
     </button>
   );
@@ -149,14 +163,14 @@ function EditableNote({
             rows={5}
         />
         <button
-            className="rounded-full bg-white/10 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2"
+            className="rounded-full bg-white/10 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2 cursor-pointer" 
             onClick={() => {onSave(editedContent); 
                 setIsEditing(false)}}
         >
             Save
         </button>
         <button
-            className="rounded-full bg-white/10 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2"
+            className="rounded-full bg-white/10 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2 cursor-pointer"
             onClick={() => {setIsEditing(false); setEditedContent(note.contents ?? "")}}
         >
             Cancel
@@ -165,7 +179,7 @@ function EditableNote({
     ): (
         <div>
             <button
-                className="rounded-full bg-white/10 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2"
+                className="rounded-full bg-white/10 px-6 py-2 font-semibold transition hover:bg-white/20 mt-2 cursor-pointer"
                 onClick={() => setIsEditing(true)}
             >
                 Edit

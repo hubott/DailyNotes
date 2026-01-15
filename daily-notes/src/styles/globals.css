@@ -126,3 +126,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 80% 70%, white, transparent),
+    radial-gradient(2px 2px at 50% 10%, white, transparent),
+    radial-gradient(2px 2px at 10% 80%, white, transparent);
+  background-size: 200px 200px;
+  animation: twinkle 6s infinite alternate;
+  opacity: 0.6;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.3; }
+  to   { opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars {
+    animation: none;
+  }
+}

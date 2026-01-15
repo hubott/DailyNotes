@@ -26,7 +26,7 @@ export default async function NotePage() {
       <div className="items-center flex flex-col gap-6">
       <h1 className="text-5xl">Daily Notes</h1>
       <h1 className="text-xl font-bold text-center">Today&apos;s date is: {new Date().toLocaleDateString("en-GB")}</h1>
-      <h1 className="text-xl font-bold">What have you done today {userName ?? "Loading..."}?</h1>
+      <h1 className="text-xl font-bold">What have you done today that you are proud of?</h1>
       <Note />
       </div>
     </div>
